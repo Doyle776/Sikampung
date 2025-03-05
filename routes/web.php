@@ -1,11 +1,21 @@
 <?php
 
+
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ResidentController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+
+Route::get('/', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'authenticate'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout']);
+Route::get('/register', [AuthController::class, 'registerView'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+
+
+
 Route::get('/dashboard', function () {
     return view('pages.dashboard');
 });
@@ -22,5 +32,8 @@ Route::delete('/resident/{id}', [ResidentController::class, 'destroy'])->name('r
 Route::middleware(['web'])->group(function () {
     Route::resource('resident', ResidentController::class);
 });
+
+
+
 
 
